@@ -44,10 +44,23 @@
 		print_r($param);
 		echo "</pre>";
 	  }
-	echo $_SERVER["REQUEST_URI"];
-	$resposta = file_get_contents('https://ramos-api.herokuapp.com/produtos?pront=3002845&key=f9cd68698276965a2a5a756ede474965');
-	$products = json_decode($resposta, true);
-	debug($products);
+	$products = null;
+	//echo $_SERVER["REQUEST_URI"];
+	if(isset($_GET['sort'])){
+		if($_GET['sort']=='price'){
+		  $resposta = file_get_contents('https://ramos-api.herokuapp.com/produtos?preco='.$_GET['way'].'&pront=3002845&key=f9cd68698276965a2a5a756ede474965');
+		} else{
+		  $resposta = file_get_contents('https://ramos-api.herokuapp.com/produtos?pront=3002845&key=f9cd68698276965a2a5a756ede474965');
+		}
+		$products = json_decode($resposta, true);
+		if($_GET['way']=='DESC'){
+			$products = array_reverse($products);
+		}
+	} else{
+		$resposta = file_get_contents('https://ramos-api.herokuapp.com/produtos?pront=3002845&key=f9cd68698276965a2a5a756ede474965');
+		$products = json_decode($resposta, true);
+	}
+	
 	include("./includes/header.php");
 	include("./includes/account.php");
 	include("./includes/cart.php");
@@ -215,9 +228,22 @@
 								<span class="text-uppercase">Sort By:</span>
 								<select class="input">
 										<option value="0">Position</option>
-										<option value="1">Price</option>
+										<option value="1" <?php if(isset($_GET['sort']) && $_GET['sort']=='price') echo ' selected' ?>>Price</option>
 									</select>
-								<a href="#" class="main-btn icon-btn"><i class="fa fa-arrow-down"></i></a>
+								<a href="#" class="main-btn icon-btn"><i <?php 
+								
+								if(isset($_GET['way'])){ 
+									
+									if($_GET['way'] == 'ASC'){
+										echo "class='fa fa-arrow-up'";
+									} else{
+										echo "class='fa fa-arrow-down'";
+									}
+								  
+								} else{
+									echo "class='fa fa-arrow-up'";
+								}
+								?>></i></a>
 							</div>
 						</div>
 						<div class="pull-right">
@@ -250,10 +276,10 @@
 								<div class="product product-single" id='.$product['id'].' data-brand='.$product['marca'].'>
 									<div class="product-thumb">
 										<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-										<img src='.$product['imagem'].' alt='.$product['nome'].'>
+										<img src='.$product['imagem'].' alt="'.$product['nome'].'">
 									</div>
 									<div class="product-body">
-										<h3 class="product-price">R$ '.$product['preco'].'</h3>
+										<h3 class="product-price">$'.$product['preco'].'</h3>
 										<div class="product-rating">
 											<i class="fa fa-star"></i>
 											<i class="fa fa-star"></i>
@@ -275,43 +301,6 @@
 						<!-- /row -->
 					</div>
 					<!-- /STORE -->
-
-					<!-- store bottom filter -->
-					<div class="store-filter clearfix">
-						<div class="pull-left">
-							<div class="row-filter">
-								<a href="#"><i class="fa fa-th-large"></i></a>
-								<a href="#" class="active"><i class="fa fa-bars"></i></a>
-							</div>
-							<div class="sort-filter">
-								<span class="text-uppercase">Sort By:</span>
-								<select class="input">
-										<option value="0">Position</option>
-										<option value="0">Price</option>
-										<option value="0">Rating</option>
-									</select>
-								<a href="#" class="main-btn icon-btn"><i class="fa fa-arrow-down"></i></a>
-							</div>
-						</div>
-						<div class="pull-right">
-							<div class="page-filter">
-								<span class="text-uppercase">Show:</span>
-								<select class="input">
-										<option value="0">10</option>
-										<option value="1">20</option>
-										<option value="2">30</option>
-									</select>
-							</div>
-							<ul class="store-pages">
-								<li><span class="text-uppercase">Page:</span></li>
-								<li class="active">1</li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#"><i class="fa fa-caret-right"></i></a></li>
-							</ul>
-						</div>
-					</div>
-					<!-- /store bottom filter -->
 				</div>
 				<!-- /MAIN -->
 			</div>

@@ -349,7 +349,6 @@
 							<ul class="custom-menu">
 								<li><a href="./index.php">Home</a></li>
 								<li><a href="./products.php">Products</a></li>
-								<li><a href="./product-page.php">Product Details</a></li>
 								<li><a href="./checkout.php">Checkout</a></li>
 							</ul>
 						</li>

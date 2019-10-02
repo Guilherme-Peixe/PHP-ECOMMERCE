@@ -157,4 +157,42 @@
 
 })
 
+$('.sort-filter a').click(e=>{
+  e.preventDefault();
+ if($('.sort-filter i').hasClass('fa-arrow-down')){
+   $('.sort-filter i').removeClass('fa-arrow-down')
+   $('.sort-filter i').addClass('fa-arrow-up');
+ } else{
+  $('.sort-filter i').removeClass('fa-arrow-up')
+  $('.sort-filter i').addClass('fa-arrow-down');
+ }
+
+ let value = document.querySelector('.sort-filter select').value
+ let sort = document.querySelector('.fa-arrow-down') != null ? 'DESC' : 'ASC' 
+ if(value == "1"){
+  window.location.href = `http://127.0.0.1/trabalho1/products.php?sort=price&way=${sort}`
+} else {
+  window.location.href = `http://127.0.0.1/trabalho1/products.php?sort=position&way=${sort}`
+}
+})
+
+
+$('.sort-filter select').on('change', e=>{
+  
+  let sort = document.querySelector('.fa-arrow-down') != null ? 'DESC' : 'ASC' 
+  let value = e.target.value
+  if(value == "1"){
+    window.location.href = `http://127.0.0.1/trabalho1/products.php?sort=price&way=${sort}`
+  } else {
+    window.location.href = `http://127.0.0.1/trabalho1/products.php?sort=position&way=${sort}`
+  }
+    
+
+})
+
+$('.main-btn.quick-view').click(e=>{
+  let productId = e.target.parentElement.parentElement.id 
+  window.location.href = `http://127.0.0.1/trabalho1/product-page.php?id=${productId}`;
+})
+
 })(jQuery);

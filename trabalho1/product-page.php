@@ -40,7 +40,20 @@
 <body>
 
 	<?php
+	function debug($param){
+		echo "<pre>";
+		print_r($param);
+		echo "</pre>";
+	}
 	echo $_SERVER["REQUEST_URI"];
+	if(isset($_GET['id'])){
+	$resposta = file_get_contents('https://ramos-api.herokuapp.com/produtos?id='.$_GET['id'].'&pront=3002845&key=f9cd68698276965a2a5a756ede474965');
+	$product = json_decode($resposta, true);
+	} else{
+		echo "<h1>ID DO PRODUTO DEVE SER PASSADO COMO PARAMETRO NA URL!</h1>";
+		exit();
+	}
+	//debug($product);
 	include("./includes/header.php");
 	include("./includes/account.php");
 	include("./includes/cart.php");
@@ -60,30 +73,30 @@
 					<div class="col-md-6">
 						<div id="product-main-view">
 							<div class="product-view">
-								<img src="./img/main-product01.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'" ?> >
 							</div>
 							<div class="product-view">
-								<img src="./img/main-product02.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'" ?> >
 							</div>
 							<div class="product-view">
-								<img src="./img/main-product03.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'" ?> >
 							</div>
 							<div class="product-view">
-								<img src="./img/main-product04.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'" ?> >
 							</div>
 						</div>
 						<div id="product-view">
 							<div class="product-view">
-								<img src="./img/thumb-product01.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'" ?> >
 							</div>
 							<div class="product-view">
-								<img src="./img/thumb-product02.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'" ?> >
 							</div>
 							<div class="product-view">
-								<img src="./img/thumb-product03.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'"?> >
 							</div>
 							<div class="product-view">
-								<img src="./img/thumb-product04.jpg" alt="">
+								<img <?php echo "src=".$product['imagem']." alt='".$product['nome']."'" ?> >
 							</div>
 						</div>
 					</div>
@@ -93,8 +106,8 @@
 								<span>New</span>
 								<span class="sale">-20%</span>
 							</div>
-							<h2 class="product-name">Product Name Goes Here</h2>
-							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
+							<h2 class="product-name"><?php echo $product['nome']?></h2>
+							<h3 class="product-price"><?php echo '$'.$product['preco']?></h3>
 							<div>
 								<div class="product-rating">
 									<i class="fa fa-star"></i>
